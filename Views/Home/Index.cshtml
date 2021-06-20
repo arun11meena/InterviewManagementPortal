@@ -1,0 +1,101 @@
+﻿@using System.Linq;
+@using InterviewManagementPortal.Models;
+
+@{
+    ViewData["Title"] = "Interview Management Portal";
+}
+
+<div class="participantsDiv">
+    <h2>Select participants, time window and schedule Interviews</h2>
+    <table id="participants">
+        <tr>
+            <th>Name (Email Address)</th>
+            <th><input type="checkbox" name="allParticipants" /></th>
+        </tr>
+        @foreach (var participant in ViewBag.Participants)
+        {
+            <tr>
+                <td>@participant.Name (@participant.EmailAddress)</td>
+                <td><input type="checkbox" name="@participant.Id" /></td>
+            </tr>
+        }
+    </table>
+    
+    <table id="interviewCreate">
+        <tr>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+        <tr>
+            <th><input type="datetime-local" id="starTime" name="startTime"></th>
+            <th><input type="datetime-local" id="endTime" name="endTime"></th>
+        </tr>
+    </table>
+    <button id="createInterview" name="createInterview">Schedule new Interview</button>
+
+    <h2>Scheduled Interviews</h2>
+    <table id="interviews">
+        <tr>
+            <th>Participants</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        @foreach (var interview in ViewBag.Interviews)
+        {
+            var participantEmails = "";
+            @foreach(var participant in @interview.Participants)
+            {
+                participantEmails += participant.EmailAddress;
+                participantEmails += ", ";
+            }
+
+            <tr>
+                <td>@participantEmails</td>
+                <td>@interview.StartTime</td>
+                <td>@interview.EndTime</td>
+                <td><button id="@interview.Id" name="edit">Edit</button></td>
+                <td><button id="@interview.Id" name="delete">Delete</button></td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    var tableElement = document.getElementById('participants');
+    var allCheckBox = tableElement.querySelector('input[name="allParticipants"]');
+    var inputs = tableElement.querySelectorAll('tbody>tr>td>input');
+
+    allCheckBox.addEventListener('change', function() {
+        inputs.forEach(function(input) {
+          input.checked = allCheckBox.checked;
+        });
+    });
+</script>
+
+<style>
+    .participantsDiv {
+        text-align: center;
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    th, td {
+        padding: 5px;
+    }
+
+    table {
+        width: 100%
+    }
+
+    button {
+        width: 100%;
+        padding: 5px;
+    }
+</style>

@@ -102,7 +102,6 @@ namespace InterviewManagementPortal.Controllers
                     }
                 }
             }
-
             return interviews;
         }
     }

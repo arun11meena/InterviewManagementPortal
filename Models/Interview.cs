@@ -15,4 +15,5 @@ namespace InterviewManagementPortal.Models
 
         public DateTime EndTime { get; set; }
     }
+    
 }
